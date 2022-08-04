@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:stable
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ../project:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+  php:
+    build: ./php
+    container_name: php
+    environment:
+      - PHP_IDE_CONFIG=serverName=Docker
+    volumes:
+      - ../project:/var/www/html
+      - ./php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    restart: always
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=course
+      - POSTGRES_PASSWORD=course
+      - POSTGRES_DB=course
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    environment:
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=course
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - '27017-27019:27017-27019'
+    environment:
+      - MONGO_INITDB_DATABASE=course
+      - MONGO_INITDB_ROOT_USERNAME=course
+      - MONGO_INITDB_ROOT_PASSWORD=course
