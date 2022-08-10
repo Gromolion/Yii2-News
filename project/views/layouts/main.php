@@ -89,6 +89,19 @@ AppAsset::register($this);
     </div>
 </main>
 
+<script>
+    // $(document).ready(function () {
+        $(document).on('click', 'a[data-ajax]', function (event) {
+            event.preventDefault();
+
+            let url = $(this).attr('href');
+            history.pushState(null, null, url);
+
+            $('#ajax-content').load(url + ' #ajax-content');
+        });
+    // })
+</script>
+
 <?php $this->endBody() ?>
 </body>
 </html>

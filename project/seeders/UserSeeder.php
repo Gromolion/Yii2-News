@@ -6,7 +6,6 @@ use app\models\Role;
 use app\models\RoleUser;
 use app\models\User;
 use Faker\Factory;
-use Yii;
 
 class UserSeeder
 {
